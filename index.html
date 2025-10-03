@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz d'Orientation Professionnelle 2025</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .welcome-screen, .quiz-screen, .result-screen {
+            display: none;
+        }
+
+        .welcome-screen.active, .quiz-screen.active, .result-screen.active {
+            display: block;
+        }
+
+        .welcome-content {
+            text-align: center;
+        }
+
+        .welcome-content p {
+            margin: 20px 0;
+            line-height: 1.6;
+            color: #555;
+            font-size: 1.1em;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin: 20px auto;
+            display: block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .question-counter {
+            text-align: center;
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .question {
+            margin-bottom: 30px;
+        }
+
+        .question h2 {
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 1.5em;
+            line-height: 1.4;
+        }
+
+        .answers {
+            display: grid;
+            gap: 15px;
+        }
+
+        .answer {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            padding: 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.05em;
+        }
+
+        .answer:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+            transform: translateX(5px);
+        }
+
+        .answer.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .btn-nav {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .btn-nav:hover:not(:disabled) {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+
+        .btn-nav:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .result-screen h2 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .result-content {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .result-content h3 {
+            color: #764ba2;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+
+        .result-content p {
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .result-content ul {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        .result-content li {
+            margin: 10px 0;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .skills-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .tag {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .question h2 {
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="welcome-screen active">
+            <h1>Quiz d'Orientation Professionnelle</h1>
+            <p class="subtitle">France 2025</p>
+            <div class="welcome-content">
+                <p>Bienvenue sur ce quiz d'orientation professionnelle !</p>
+                <p>Répondez à 20 questions pour découvrir le métier qui pourrait vous correspondre en 2025.</p>
+                <p>Prenez votre temps et répondez honnêtement. Il n'y a pas de bonnes ou mauvaises réponses.</p>
+                <button class="btn" onclick="startQuiz()">Commencer le Quiz</button>
+            </div>
+        </div>
+
+        <div class="quiz-screen">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="question-counter" id="questionCounter"></div>
+            <div class="question" id="questionContainer"></div>
+            <div class="navigation">
+                <button class="btn-nav" id="prevBtn" onclick="previousQuestion()">Précédent</button>
+                <button class="btn-nav" id="nextBtn" onclick="nextQuestion()" disabled>Suivant</button>
+            </div>
+        </div>
+
+        <div class="result-screen">
+            <h2>Votre Résultat</h2>
+            <div class="result-content" id="resultContent"></div>
+            <button class="btn" onclick="restartQuiz()">Recommencer</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Quel environnement de travail préférez-vous ?",
+                answers: [
+                    { text: "Bureau moderne avec équipe dynamique", profiles: ["tech", "business"] },
+                    { text: "Travail en extérieur ou sur le terrain", profiles: ["artisan", "social"] },
+                    { text: "Espace créatif et inspirant", profiles: ["creative", "artisan"] },
+                    { text: "Environnement structuré et méthodique", profiles: ["science", "business"] }
+                ]
+            },
+            {
+                question: "Qu'est-ce qui vous motive le plus dans un travail ?",
+                answers: [
+                    { text: "Résoudre des problèmes complexes", profiles: ["tech", "science"] },
+                    { text: "Aider les autres et avoir un impact social", profiles: ["social", "health"] },
+                    { text: "Créer quelque chose de nouveau", profiles: ["creative", "tech"] },
+                    { text: "Gagner un bon salaire et évoluer", profiles: ["business", "tech"] }
+                ]
+            },
+            {
+                question: "Comment aimez-vous travailler ?",
+                answers: [
+                    { text: "En équipe collaborative", profiles: ["business", "social"] },
+                    { text: "De manière autonome et indépendante", profiles: ["tech", "creative"] },
+                    { text: "Avec mes mains et des outils", profiles: ["artisan", "health"] },
+                    { text: "En analysant des données et informations", profiles: ["science", "tech"] }
+                ]
+            },
+            {
+                question: "Quelle est votre matière préférée ?",
+                answers: [
+                    { text: "Mathématiques et sciences", profiles: ["science", "tech"] },
+                    { text: "Langues et communication", profiles: ["business", "social"] },
+                    { text: "Arts et design", profiles: ["creative", "artisan"] },
+                    { text: "Sports et activités pratiques", profiles: ["artisan", "health"] }
+                ]
+            },
+            {
+                question: "Quel type de défi vous attire ?",
+                answers: [
+                    { text: "Optimiser et améliorer des processus", profiles: ["tech", "business"] },
+                    { text: "Comprendre et aider les gens", profiles: ["social", "health"] },
+                    { text: "Concevoir et créer visuellement", profiles: ["creative", "artisan"] },
+                    { text: "Découvrir et innover", profiles: ["science", "tech"] }
+                ]
+            },
+            {
+                question: "Comment gérez-vous le stress ?",
+                answers: [
+                    { text: "J'analyse la situation logiquement", profiles: ["tech", "science"] },
+                    { text: "Je cherche du soutien auprès des autres", profiles: ["social", "business"] },
+                    { text: "Je m'exprime de manière créative", profiles: ["creative", "artisan"] },
+                    { text: "Je passe à l'action immédiatement", profiles: ["artisan", "business"] }
+                ]
+            },
+            {
+                question: "Quel serait votre hobby idéal ?",
+                answers: [
+                    { text: "Programmer ou bricoler high-tech", profiles: ["tech", "science"] },
+                    { text: "Activités associatives et bénévolat", profiles: ["social", "health"] },
+                    { text: "Photographie, dessin ou musique", profiles: ["creative", "artisan"] },
+                    { text: "Sport ou activités manuelles", profiles: ["artisan", "health"] }
+                ]
+            },
+            {
+                question: "Quelle compétence aimeriez-vous développer ?",
+                answers: [
+                    { text: "Intelligence artificielle et data", profiles: ["tech", "science"] },
+                    { text: "Leadership et management", profiles: ["business", "social"] },
+                    { text: "Design et storytelling", profiles: ["creative", "business"] },
+                    { text: "Expertise technique spécialisée", profiles: ["artisan", "science"] }
+                ]
+            },
+            {
+                question: "Quel type d'impact voulez-vous avoir ?",
+                answers: [
+                    { text: "Innover technologiquement", profiles: ["tech", "science"] },
+                    { text: "Améliorer la société", profiles: ["social", "health"] },
+                    { text: "Influencer culturellement", profiles: ["creative", "business"] },
+                    { text: "Créer de la valeur économique", profiles: ["business", "artisan"] }
+                ]
+            },
+            {
+                question: "Comment préférez-vous apprendre ?",
+                answers: [
+                    { text: "Par la pratique et l'expérimentation", profiles: ["tech", "artisan"] },
+                    { text: "Par l'échange et la discussion", profiles: ["social", "business"] },
+                    { text: "Par l'observation et l'inspiration", profiles: ["creative", "science"] },
+                    { text: "Par l'étude théorique approfondie", profiles: ["science", "tech"] }
+                ]
+            },
+            {
+                question: "Quelle est votre vision du succès ?",
+                answers: [
+                    { text: "Maîtriser une technologie de pointe", profiles: ["tech", "science"] },
+                    { text: "Avoir aidé de nombreuses personnes", profiles: ["social", "health"] },
+                    { text: "Avoir créé quelque chose d'unique", profiles: ["creative", "artisan"] },
+                    { text: "Diriger une équipe performante", profiles: ["business", "social"] }
+                ]
+            },
+            {
+                question: "Quel rythme de travail préférez-vous ?",
+                answers: [
+                    { text: "Projets longs et approfondis", profiles: ["science", "tech"] },
+                    { text: "Variété et renouvellement constant", profiles: ["creative", "business"] },
+                    { text: "Routine stable et prévisible", profiles: ["artisan", "health"] },
+                    { text: "Intensité avec des pics d'activité", profiles: ["business", "tech"] }
+                ]
+            },
+            {
+                question: "Quelle technologie vous fascine le plus ?",
+                answers: [
+                    { text: "Intelligence artificielle et robotique", profiles: ["tech", "science"] },
+                    { text: "Réseaux sociaux et communication", profiles: ["business", "creative"] },
+                    { text: "Technologies médicales et santé", profiles: ["health", "science"] },
+                    { text: "Outils de création et fabrication", profiles: ["creative", "artisan"] }
+                ]
+            },
+            {
+                question: "Comment abordez-vous un nouveau projet ?",
+                answers: [
+                    { text: "Je planifie et structure méthodiquement", profiles: ["science", "business"] },
+                    { text: "Je commence directement par essayer", profiles: ["artisan", "tech"] },
+                    { text: "Je cherche l'inspiration créative", profiles: ["creative", "social"] },
+                    { text: "Je consulte mon équipe d'abord", profiles: ["social", "business"] }
+                ]
+            },
+            {
+                question: "Quel environnement vous inspire ?",
+                answers: [
+                    { text: "Laboratoire ou espace high-tech", profiles: ["science", "tech"] },
+                    { text: "Espaces publics animés", profiles: ["social", "business"] },
+                    { text: "Atelier ou studio créatif", profiles: ["creative", "artisan"] },
+                    { text: "Nature et grands espaces", profiles: ["artisan", "health"] }
+                ]
+            },
+            {
+                question: "Quelle qualité vous décrit le mieux ?",
+                answers: [
+                    { text: "Analytique et logique", profiles: ["science", "tech"] },
+                    { text: "Empathique et à l'écoute", profiles: ["social", "health"] },
+                    { text: "Créatif et imaginatif", profiles: ["creative", "artisan"] },
+                    { text: "Ambitieux et déterminé", profiles: ["business", "tech"] }
+                ]
+            },
+            {
+                question: "Quel aspect du futur vous intéresse ?",
+                answers: [
+                    { text: "Avancées scientifiques et tech", profiles: ["science", "tech"] },
+                    { text: "Évolution sociétale et écologique", profiles: ["social", "health"] },
+                    { text: "Nouvelles formes d'expression", profiles: ["creative", "business"] },
+                    { text: "Nouveaux marchés et opportunités", profiles: ["business", "artisan"] }
+                ]
+            },
+            {
+                question: "Comment résolvez-vous les conflits ?",
+                answers: [
+                    { text: "Par la logique et les faits", profiles: ["science", "tech"] },
+                    { text: "Par le dialogue et la médiation", profiles: ["social", "business"] },
+                    { text: "En proposant des alternatives créatives", profiles: ["creative", "social"] },
+                    { text: "En prenant des décisions fermes", profiles: ["business", "artisan"] }
+                ]
+            },
+            {
+                question: "Quelle formation vous attire ?",
+                answers: [
+                    { text: "École d'ingénieurs ou université scientifique", profiles: ["tech", "science"] },
+                    { text: "Sciences humaines et sociales", profiles: ["social", "health"] },
+                    { text: "École d'art ou design", profiles: ["creative", "artisan"] },
+                    { text: "École de commerce ou management", profiles: ["business", "tech"] }
+                ]
+            },
+            {
+                question: "Qu'est-ce qui vous rend fier de votre travail ?",
+                answers: [
+                    { text: "L'excellence technique et la précision", profiles: ["science", "tech"] },
+                    { text: "Le bien-être que j'apporte aux autres", profiles: ["social", "health"] },
+                    { text: "L'originalité et la beauté du résultat", profiles: ["creative", "artisan"] },
+                    { text: "Les résultats concrets et mesurables", profiles: ["business", "tech"] }
+                ]
+            }
+        ];
+
+        const careers = {
+            tech: {
+                title: "Développeur·se / Ingénieur·e Tech",
+                description: "Votre profil révèle une forte affinité pour la technologie et l'innovation. Vous aimez résoudre des problèmes complexes et créer des solutions numériques.",
+                careers: [
+                    "Développeur·se Full-Stack",
+                    "Ingénieur·e en Intelligence Artificielle",
+                    "Data Scientist",
+                    "DevOps Engineer",
+                    "Architecte Cloud"
+                ],
+                skills: ["Programmation", "Logique", "Innovation", "Résolution de problèmes"],
+                outlook: "Le secteur tech continue sa croissance explosive en France avec une forte demande de professionnels qualifiés. Salaires attractifs et télétravail courant."
+            },
+            business: {
+                title: "Manager / Expert·e Business",
+                description: "Vous excellez dans la stratégie, le leadership et la création de valeur. Votre approche pragmatique et votre ambition sont vos atouts majeurs.",
+                careers: [
+                    "Chef·fe de Projet Digital",
+                    "Consultant·e en Stratégie",
+                    "Business Developer",
+                    "Product Manager",
+                    "Entrepreneur·se"
+                ],
+                skills: ["Leadership", "Communication", "Stratégie", "Négociation"],
+                outlook: "Les métiers du business se transforment avec le digital. Forte demande pour les profils capables de combiner vision stratégique et compétences tech."
+            },
+            creative: {
+                title: "Créatif·ve / Designer",
+                description: "Votre créativité et votre sens artistique sont remarquables. Vous aimez concevoir, imaginer et donner vie à des idées originales.",
+                careers: [
+                    "UX/UI Designer",
+                    "Directeur·rice Artistique Digital",
+                    "Motion Designer",
+                    "Content Creator",
+                    "Chef·fe de Projet Créatif"
+                ],
+                skills: ["Créativité", "Design", "Innovation visuelle", "Storytelling"],
+                outlook: "L'économie de la création explose avec les réseaux sociaux et le digital. Les designers UX/UI sont particulièrement recherchés en 2025."
+            },
+            science: {
+                title: "Chercheur·se / Scientifique",
+                description: "Vous êtes animé par la curiosité scientifique et l'analyse. La recherche, l'expérimentation et la découverte sont votre moteur.",
+                careers: [
+                    "Chercheur·se en IA",
+                    "Ingénieur·e R&D",
+                    "Data Analyst",
+                    "Bioinformaticien·ne",
+                    "Ingénieur·e Environnemental"
+                ],
+                skills: ["Analyse", "Recherche", "Rigueur scientifique", "Expertise technique"],
+                outlook: "La recherche en IA, biotechnologies et transition écologique connaît un boom. Nombreuses opportunités dans les grandes entreprises et startups."
+            },
+            social: {
+                title: "Métier du Social et de l'Humain",
+                description: "Votre empathie et votre désir d'aider font de vous un pilier pour les autres. Vous trouvez du sens dans l'accompagnement et le lien social.",
+                careers: [
+                    "Psychologue du Travail",
+                    "Responsable RSE",
+                    "Coach Professionnel",
+                    "Médiateur·rice Numérique",
+                    "Conseiller·ère en Insertion"
+                ],
+                skills: ["Empathie", "Communication", "Accompagnement", "Médiation"],
+                outlook: "La santé mentale et le bien-être au travail deviennent prioritaires. Les métiers de l'accompagnement humain sont en forte croissance."
+            },
+            health: {
+                title: "Professionnel·le de Santé",
+                description: "Vous avez une vocation pour soigner et prendre soin des autres. La santé et le bien-être sont au cœur de vos préoccupations.",
+                careers: [
+                    "Infirmier·ère en Pratique Avancée",
+                    "Ergothérapeute",
+                    "Diététicien·ne-Nutritionniste",
+                    "Préparateur·rice Physique",
+                    "Technicien·ne en Santé Digitale"
+                ],
+                skills: ["Soin", "Écoute", "Empathie", "Expertise médicale"],
+                outlook: "Vieillissement de la population et digitalisation de la santé créent de nombreuses opportunités. Métiers en tension avec de belles perspectives."
+            },
+            artisan: {
+                title: "Artisan·e / Expert·e Technique",
+                description: "Vous aimez travailler avec vos mains et créer des objets concrets. Le savoir-faire technique et la qualité sont vos priorités.",
+                careers: [
+                    "Artisan·e du Bâtiment Écologique",
+                    "Technicien·ne en Énergies Renouvelables",
+                    "Électricien·ne Domotique",
+                    "Designer d'Objets Connectés",
+                    "Menuisier·ère Créateur·rice"
+                ],
+                skills: ["Savoir-faire technique", "Précision", "Créativité pratique", "Autonomie"],
+                outlook: "La transition écologique et la rénovation énergétique dynamisent l'artisanat. Les artisans qualifiés sont très recherchés avec d'excellentes rémunérations."
+            }
+        };
+
+        let currentQuestion = 0;
+        let answers = [];
+        let scores = {
+            tech: 0,
+            business: 0,
+            creative: 0,
+            science: 0,
+            social: 0,
+            health: 0,
+            artisan: 0
+        };
+
+        function startQuiz() {
+            document.querySelector('.welcome-screen').classList.remove('active');
+            document.querySelector('.quiz-screen').classList.add('active');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const question = questions[currentQuestion];
+            const questionCounter = document.getElementById('questionCounter');
+            const questionContainer = document.getElementById('questionContainer');
+            const progressFill = document.getElementById('progressFill');
+
+            questionCounter.textContent = `Question ${currentQuestion + 1} sur ${questions.length}`;
+            progressFill.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
+
+            let html = `
+                <h2>${question.question}</h2>
+                <div class="answers">
+            `;
+
+            question.answers.forEach((answer, index) => {
+                const isSelected = answers[currentQuestion] === index;
+                html += `
+                    <div class="answer ${isSelected ? 'selected' : ''}" onclick="selectAnswer(${index})">
+                        ${answer.text}
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            questionContainer.innerHTML = html;
+
+            updateNavButtons();
+        }
+
+        function selectAnswer(answerIndex) {
+            answers[currentQuestion] = answerIndex;
+            showQuestion();
+        }
+
+        function updateNavButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            prevBtn.disabled = currentQuestion === 0;
+            nextBtn.disabled = answers[currentQuestion] === undefined;
+
+            if (currentQuestion === questions.length - 1 && answers[currentQuestion] !== undefined) {
+                nextBtn.textContent = 'Voir le résultat';
+            } else {
+                nextBtn.textContent = 'Suivant';
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion();
+            } else {
+                calculateResults();
+            }
+        }
+
+        function calculateResults() {
+            scores = {
+                tech: 0,
+                business: 0,
+                creative: 0,
+                science: 0,
+                social: 0,
+                health: 0,
+                artisan: 0
+            };
+
+            answers.forEach((answerIndex, questionIndex) => {
+                const answer = questions[questionIndex].answers[answerIndex];
+                answer.profiles.forEach(profile => {
+                    scores[profile]++;
+                });
+            });
+
+            let maxScore = 0;
+            let topProfile = '';
+
+            for (let profile in scores) {
+                if (scores[profile] > maxScore) {
+                    maxScore = scores[profile];
+                    topProfile = profile;
+                }
+            }
+
+            showResults(topProfile);
+        }
+
+        function showResults(profile) {
+            const career = careers[profile];
+            const resultContent = document.getElementById('resultContent');
+
+            let html = `
+                <h3>${career.title}</h3>
+                <p><strong>${career.description}</strong></p>
+
+                <h4 style="color: #667eea; margin-top: 25px; margin-bottom: 10px;">Métiers recommandés :</h4>
+                <ul>
+                    ${career.careers.map(c => `<li>${c}</li>`).join('')}
+                </ul>
+
+                <h4 style="color: #667eea; margin-top: 25px; margin-bottom: 10px;">Vos compétences clés :</h4>
+                <div class="skills-tags">
+                    ${career.skills.map(skill => `<span class="tag">${skill}</span>`).join('')}
+                </div>
+
+                <h4 style="color: #667eea; margin-top: 25px; margin-bottom: 10px;">Perspectives 2025 :</h4>
+                <p>${career.outlook}</p>
+            `;
+
+            resultContent.innerHTML = html;
+
+            document.querySelector('.quiz-screen').classList.remove('active');
+            document.querySelector('.result-screen').classList.add('active');
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            answers = [];
+            scores = {
+                tech: 0,
+                business: 0,
+                creative: 0,
+                science: 0,
+                social: 0,
+                health: 0,
+                artisan: 0
+            };
+
+            document.querySelector('.result-screen').classList.remove('active');
+            document.querySelector('.welcome-screen').classList.add('active');
+        }
+    </script>
+</body>
+</html>
