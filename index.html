@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz d'Orientation Professionnelle 2025</title>
+    <title>Quiz d'Orientation - Lycée Seconde</title>
     <style>
         * {
             margin: 0;
@@ -25,7 +25,7 @@
             background: white;
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 800px;
+            max-width: 900px;
             width: 100%;
             padding: 40px;
         }
@@ -190,11 +190,18 @@
             font-size: 1.8em;
         }
 
+        .result-content h4 {
+            color: #667eea;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
         .result-content p {
             line-height: 1.8;
             color: #555;
             margin-bottom: 15px;
-            font-size: 1.1em;
+            font-size: 1.05em;
         }
 
         .result-content ul {
@@ -208,11 +215,51 @@
             line-height: 1.6;
         }
 
+        .specialties-box {
+            background: linear-gradient(135deg, #f0f4ff 0%, #e8ecff 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .schools-box {
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px 0;
+        }
+
+        .schools-box h5 {
+            color: #764ba2;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+
+        .school-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .school-name {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .school-info {
+            font-size: 0.95em;
+            color: #666;
+            margin-top: 5px;
+        }
+
         .skills-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            margin-top: 20px;
+            margin-top: 15px;
         }
 
         .tag {
@@ -221,6 +268,14 @@
             padding: 8px 16px;
             border-radius: 20px;
             font-size: 0.9em;
+        }
+
+        .pathway-box {
+            background: linear-gradient(135deg, #fff5e6 0%, #ffe6cc 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 4px solid #ff9800;
         }
 
         @media (max-width: 600px) {
@@ -241,12 +296,12 @@
 <body>
     <div class="container">
         <div class="welcome-screen active">
-            <h1>Quiz d'Orientation Professionnelle</h1>
-            <p class="subtitle">France 2025</p>
+            <h1>Quiz d'Orientation Lycée</h1>
+            <p class="subtitle">Secondes Générales & Technologiques</p>
             <div class="welcome-content">
-                <p>Bienvenue sur ce quiz d'orientation professionnelle !</p>
-                <p>Répondez à 20 questions pour découvrir le métier qui pourrait vous correspondre en 2025.</p>
-                <p>Prenez votre temps et répondez honnêtement. Il n'y a pas de bonnes ou mauvaises réponses.</p>
+                <p>Bienvenue sur ce quiz d'orientation personnalisé !</p>
+                <p>Ce test de 20 questions vous aidera à identifier le parcours qui vous correspond : spécialités du bac, filières post-bac et formations accessibles dans la région de Châlons-en-Champagne.</p>
+                <p>Répondez honnêtement, il n'y a pas de bonnes ou mauvaises réponses.</p>
                 <button class="btn" onclick="startQuiz()">Commencer le Quiz</button>
             </div>
         </div>
@@ -264,7 +319,7 @@
         </div>
 
         <div class="result-screen">
-            <h2>Votre Résultat</h2>
+            <h2>Votre Parcours Recommandé</h2>
             <div class="result-content" id="resultContent"></div>
             <button class="btn" onclick="restartQuiz()">Recommencer</button>
         </div>
@@ -273,279 +328,543 @@
     <script>
         const questions = [
             {
-                question: "Quel environnement de travail préférez-vous ?",
+                question: "Dans quelles matières vous sentez-vous le plus à l'aise ?",
                 answers: [
-                    { text: "Bureau moderne avec équipe dynamique", profiles: ["tech", "business"] },
-                    { text: "Travail en extérieur ou sur le terrain", profiles: ["artisan", "social"] },
-                    { text: "Espace créatif et inspirant", profiles: ["creative", "artisan"] },
-                    { text: "Environnement structuré et méthodique", profiles: ["science", "business"] }
+                    { text: "Maths et physique-chimie", profiles: ["science", "tech"] },
+                    { text: "Français, langues, histoire-géo", profiles: ["humanites", "social"] },
+                    { text: "Arts plastiques, musique, théâtre", profiles: ["creative", "culture"] },
+                    { text: "SVT, sports, activités pratiques", profiles: ["sante", "nature"] }
                 ]
             },
             {
-                question: "Qu'est-ce qui vous motive le plus dans un travail ?",
+                question: "Quel type de projet vous motive le plus au lycée ?",
                 answers: [
-                    { text: "Résoudre des problèmes complexes", profiles: ["tech", "science"] },
-                    { text: "Aider les autres et avoir un impact social", profiles: ["social", "health"] },
-                    { text: "Créer quelque chose de nouveau", profiles: ["creative", "tech"] },
-                    { text: "Gagner un bon salaire et évoluer", profiles: ["business", "tech"] }
+                    { text: "Créer une application ou un site web", profiles: ["tech", "science"] },
+                    { text: "Organiser un événement solidaire", profiles: ["social", "humanites"] },
+                    { text: "Réaliser un court-métrage ou une expo", profiles: ["creative", "culture"] },
+                    { text: "Monter une mini-entreprise", profiles: ["commerce", "tech"] }
                 ]
             },
             {
-                question: "Comment aimez-vous travailler ?",
+                question: "Comment imaginez-vous vos études après le bac ?",
                 answers: [
-                    { text: "En équipe collaborative", profiles: ["business", "social"] },
-                    { text: "De manière autonome et indépendante", profiles: ["tech", "creative"] },
-                    { text: "Avec mes mains et des outils", profiles: ["artisan", "health"] },
-                    { text: "En analysant des données et informations", profiles: ["science", "tech"] }
+                    { text: "Études longues à l'université (5 ans+)", profiles: ["science", "humanites"] },
+                    { text: "Formation courte et professionnalisante (BTS/BUT)", profiles: ["tech", "commerce"] },
+                    { text: "École spécialisée (art, santé, social)", profiles: ["creative", "sante"] },
+                    { text: "Alternance pour être vite dans l'action", profiles: ["commerce", "nature"] }
                 ]
             },
             {
-                question: "Quelle est votre matière préférée ?",
+                question: "Qu'est-ce qui compte le plus pour vous dans votre futur métier ?",
                 answers: [
-                    { text: "Mathématiques et sciences", profiles: ["science", "tech"] },
-                    { text: "Langues et communication", profiles: ["business", "social"] },
-                    { text: "Arts et design", profiles: ["creative", "artisan"] },
-                    { text: "Sports et activités pratiques", profiles: ["artisan", "health"] }
+                    { text: "Innover et utiliser les nouvelles technologies", profiles: ["tech", "science"] },
+                    { text: "Aider les gens, être utile à la société", profiles: ["social", "sante"] },
+                    { text: "Exprimer ma créativité", profiles: ["creative", "culture"] },
+                    { text: "Avoir un bon salaire et des responsabilités", profiles: ["commerce", "tech"] }
                 ]
             },
             {
-                question: "Quel type de défi vous attire ?",
+                question: "Quel environnement de travail vous attire ?",
                 answers: [
-                    { text: "Optimiser et améliorer des processus", profiles: ["tech", "business"] },
-                    { text: "Comprendre et aider les gens", profiles: ["social", "health"] },
-                    { text: "Concevoir et créer visuellement", profiles: ["creative", "artisan"] },
-                    { text: "Découvrir et innover", profiles: ["science", "tech"] }
-                ]
-            },
-            {
-                question: "Comment gérez-vous le stress ?",
-                answers: [
-                    { text: "J'analyse la situation logiquement", profiles: ["tech", "science"] },
-                    { text: "Je cherche du soutien auprès des autres", profiles: ["social", "business"] },
-                    { text: "Je m'exprime de manière créative", profiles: ["creative", "artisan"] },
-                    { text: "Je passe à l'action immédiatement", profiles: ["artisan", "business"] }
-                ]
-            },
-            {
-                question: "Quel serait votre hobby idéal ?",
-                answers: [
-                    { text: "Programmer ou bricoler high-tech", profiles: ["tech", "science"] },
-                    { text: "Activités associatives et bénévolat", profiles: ["social", "health"] },
-                    { text: "Photographie, dessin ou musique", profiles: ["creative", "artisan"] },
-                    { text: "Sport ou activités manuelles", profiles: ["artisan", "health"] }
-                ]
-            },
-            {
-                question: "Quelle compétence aimeriez-vous développer ?",
-                answers: [
-                    { text: "Intelligence artificielle et data", profiles: ["tech", "science"] },
-                    { text: "Leadership et management", profiles: ["business", "social"] },
-                    { text: "Design et storytelling", profiles: ["creative", "business"] },
-                    { text: "Expertise technique spécialisée", profiles: ["artisan", "science"] }
-                ]
-            },
-            {
-                question: "Quel type d'impact voulez-vous avoir ?",
-                answers: [
-                    { text: "Innover technologiquement", profiles: ["tech", "science"] },
-                    { text: "Améliorer la société", profiles: ["social", "health"] },
-                    { text: "Influencer culturellement", profiles: ["creative", "business"] },
-                    { text: "Créer de la valeur économique", profiles: ["business", "artisan"] }
+                    { text: "Bureau moderne, startup, laboratoire", profiles: ["tech", "science"] },
+                    { text: "Hôpital, école, associations", profiles: ["sante", "social"] },
+                    { text: "Studio, agence créative, musée", profiles: ["creative", "culture"] },
+                    { text: "Extérieur, chantiers, nature", profiles: ["nature", "commerce"] }
                 ]
             },
             {
                 question: "Comment préférez-vous apprendre ?",
                 answers: [
-                    { text: "Par la pratique et l'expérimentation", profiles: ["tech", "artisan"] },
-                    { text: "Par l'échange et la discussion", profiles: ["social", "business"] },
-                    { text: "Par l'observation et l'inspiration", profiles: ["creative", "science"] },
-                    { text: "Par l'étude théorique approfondie", profiles: ["science", "tech"] }
+                    { text: "En résolvant des problèmes complexes", profiles: ["science", "tech"] },
+                    { text: "En échangeant avec les autres", profiles: ["social", "humanites"] },
+                    { text: "En créant et en expérimentant", profiles: ["creative", "tech"] },
+                    { text: "En pratiquant concrètement", profiles: ["nature", "sante"] }
                 ]
             },
             {
-                question: "Quelle est votre vision du succès ?",
+                question: "Quel est votre rapport aux écrans et au numérique ?",
                 answers: [
-                    { text: "Maîtriser une technologie de pointe", profiles: ["tech", "science"] },
-                    { text: "Avoir aidé de nombreuses personnes", profiles: ["social", "health"] },
-                    { text: "Avoir créé quelque chose d'unique", profiles: ["creative", "artisan"] },
-                    { text: "Diriger une équipe performante", profiles: ["business", "social"] }
+                    { text: "J'adore coder, bidouiller, comprendre comment ça marche", profiles: ["tech", "science"] },
+                    { text: "J'utilise surtout pour communiquer et m'informer", profiles: ["social", "commerce"] },
+                    { text: "Je crée du contenu (vidéos, design, musique)", profiles: ["creative", "culture"] },
+                    { text: "J'utilise modérément, je préfère le contact réel", profiles: ["sante", "nature"] }
                 ]
             },
             {
-                question: "Quel rythme de travail préférez-vous ?",
+                question: "Dans un travail de groupe, quel rôle prenez-vous ?",
                 answers: [
-                    { text: "Projets longs et approfondis", profiles: ["science", "tech"] },
-                    { text: "Variété et renouvellement constant", profiles: ["creative", "business"] },
-                    { text: "Routine stable et prévisible", profiles: ["artisan", "health"] },
-                    { text: "Intensité avec des pics d'activité", profiles: ["business", "tech"] }
+                    { text: "Celui qui trouve les solutions techniques", profiles: ["tech", "science"] },
+                    { text: "Celui qui coordonne et motive l'équipe", profiles: ["social", "commerce"] },
+                    { text: "Celui qui a les idées créatives", profiles: ["creative", "culture"] },
+                    { text: "Celui qui fait avancer concrètement", profiles: ["nature", "sante"] }
                 ]
             },
             {
-                question: "Quelle technologie vous fascine le plus ?",
+                question: "Quelle activité extra-scolaire vous correspond ?",
                 answers: [
-                    { text: "Intelligence artificielle et robotique", profiles: ["tech", "science"] },
-                    { text: "Réseaux sociaux et communication", profiles: ["business", "creative"] },
-                    { text: "Technologies médicales et santé", profiles: ["health", "science"] },
-                    { text: "Outils de création et fabrication", profiles: ["creative", "artisan"] }
+                    { text: "Club robotique, coding, sciences", profiles: ["tech", "science"] },
+                    { text: "Délégué de classe, bénévolat", profiles: ["social", "humanites"] },
+                    { text: "Théâtre, dessin, musique", profiles: ["creative", "culture"] },
+                    { text: "Sport, scouts, jardinage", profiles: ["nature", "sante"] }
                 ]
             },
             {
-                question: "Comment abordez-vous un nouveau projet ?",
+                question: "Qu'est-ce qui vous stresse le moins dans le travail scolaire ?",
                 answers: [
-                    { text: "Je planifie et structure méthodiquement", profiles: ["science", "business"] },
-                    { text: "Je commence directement par essayer", profiles: ["artisan", "tech"] },
-                    { text: "Je cherche l'inspiration créative", profiles: ["creative", "social"] },
-                    { text: "Je consulte mon équipe d'abord", profiles: ["social", "business"] }
+                    { text: "Les exercices de maths et de logique", profiles: ["science", "tech"] },
+                    { text: "Les dissertations et exposés oraux", profiles: ["humanites", "social"] },
+                    { text: "Les projets créatifs et artistiques", profiles: ["creative", "culture"] },
+                    { text: "Les TP et travaux pratiques", profiles: ["nature", "sante"] }
                 ]
             },
             {
-                question: "Quel environnement vous inspire ?",
+                question: "Quelle serait votre journée idéale de stage en entreprise ?",
                 answers: [
-                    { text: "Laboratoire ou espace high-tech", profiles: ["science", "tech"] },
-                    { text: "Espaces publics animés", profiles: ["social", "business"] },
-                    { text: "Atelier ou studio créatif", profiles: ["creative", "artisan"] },
-                    { text: "Nature et grands espaces", profiles: ["artisan", "health"] }
+                    { text: "Développer un logiciel ou analyser des données", profiles: ["tech", "science"] },
+                    { text: "Accueillir du public, conseiller des clients", profiles: ["commerce", "social"] },
+                    { text: "Créer des visuels, tourner des vidéos", profiles: ["creative", "culture"] },
+                    { text: "Soigner, construire, cultiver", profiles: ["sante", "nature"] }
                 ]
             },
             {
-                question: "Quelle qualité vous décrit le mieux ?",
+                question: "Si vous deviez choisir un livre, ce serait plutôt :",
                 answers: [
-                    { text: "Analytique et logique", profiles: ["science", "tech"] },
-                    { text: "Empathique et à l'écoute", profiles: ["social", "health"] },
-                    { text: "Créatif et imaginatif", profiles: ["creative", "artisan"] },
-                    { text: "Ambitieux et déterminé", profiles: ["business", "tech"] }
+                    { text: "Science-fiction, vulgarisation scientifique", profiles: ["science", "tech"] },
+                    { text: "Roman, philosophie, histoire", profiles: ["humanites", "culture"] },
+                    { text: "BD, manga, livre d'art", profiles: ["creative", "culture"] },
+                    { text: "Développement personnel, biographies", profiles: ["social", "commerce"] }
                 ]
             },
             {
-                question: "Quel aspect du futur vous intéresse ?",
+                question: "Comment gérez-vous les défis difficiles ?",
                 answers: [
-                    { text: "Avancées scientifiques et tech", profiles: ["science", "tech"] },
-                    { text: "Évolution sociétale et écologique", profiles: ["social", "health"] },
-                    { text: "Nouvelles formes d'expression", profiles: ["creative", "business"] },
-                    { text: "Nouveaux marchés et opportunités", profiles: ["business", "artisan"] }
+                    { text: "J'analyse logiquement et je cherche la solution", profiles: ["science", "tech"] },
+                    { text: "Je demande conseil autour de moi", profiles: ["social", "humanites"] },
+                    { text: "Je trouve une approche originale", profiles: ["creative", "commerce"] },
+                    { text: "Je fonce et j'apprends en faisant", profiles: ["nature", "sante"] }
                 ]
             },
             {
-                question: "Comment résolvez-vous les conflits ?",
+                question: "Quel aspect de la transition écologique vous intéresse ?",
                 answers: [
-                    { text: "Par la logique et les faits", profiles: ["science", "tech"] },
-                    { text: "Par le dialogue et la médiation", profiles: ["social", "business"] },
-                    { text: "En proposant des alternatives créatives", profiles: ["creative", "social"] },
-                    { text: "En prenant des décisions fermes", profiles: ["business", "artisan"] }
+                    { text: "Les innovations technologiques (énergie, transport)", profiles: ["tech", "science"] },
+                    { text: "Sensibiliser et éduquer aux enjeux", profiles: ["social", "humanites"] },
+                    { text: "Créer des campagnes de communication engagées", profiles: ["creative", "culture"] },
+                    { text: "Agriculture bio, construction écologique", profiles: ["nature", "sante"] }
                 ]
             },
             {
-                question: "Quelle formation vous attire ?",
+                question: "Qu'attendez-vous de vos professeurs ?",
                 answers: [
-                    { text: "École d'ingénieurs ou université scientifique", profiles: ["tech", "science"] },
-                    { text: "Sciences humaines et sociales", profiles: ["social", "health"] },
-                    { text: "École d'art ou design", profiles: ["creative", "artisan"] },
-                    { text: "École de commerce ou management", profiles: ["business", "tech"] }
+                    { text: "De la rigueur et de l'expertise technique", profiles: ["science", "tech"] },
+                    { text: "De l'écoute et de la bienveillance", profiles: ["social", "sante"] },
+                    { text: "De la liberté et de l'inspiration", profiles: ["creative", "culture"] },
+                    { text: "Des conseils pratiques et concrets", profiles: ["commerce", "nature"] }
                 ]
             },
             {
-                question: "Qu'est-ce qui vous rend fier de votre travail ?",
+                question: "Quelle série/film vous captive le plus ?",
                 answers: [
-                    { text: "L'excellence technique et la précision", profiles: ["science", "tech"] },
-                    { text: "Le bien-être que j'apporte aux autres", profiles: ["social", "health"] },
-                    { text: "L'originalité et la beauté du résultat", profiles: ["creative", "artisan"] },
-                    { text: "Les résultats concrets et mesurables", profiles: ["business", "tech"] }
+                    { text: "Thrillers scientifiques, Black Mirror", profiles: ["tech", "science"] },
+                    { text: "Drames historiques, documentaires sociaux", profiles: ["humanites", "social"] },
+                    { text: "Films d'auteur, séries créatives", profiles: ["creative", "culture"] },
+                    { text: "Aventure, sport, nature", profiles: ["nature", "commerce"] }
+                ]
+            },
+            {
+                question: "Dans 10 ans, vous vous voyez plutôt :",
+                answers: [
+                    { text: "Expert technique dans un domaine de pointe", profiles: ["tech", "science"] },
+                    { text: "Accompagner des personnes (prof, psychologue...)", profiles: ["social", "sante"] },
+                    { text: "Créer des œuvres ou du contenu", profiles: ["creative", "culture"] },
+                    { text: "Manager une équipe ou mon entreprise", profiles: ["commerce", "tech"] }
+                ]
+            },
+            {
+                question: "Qu'est-ce qui vous rend fier dans votre travail ?",
+                answers: [
+                    { text: "La précision et la qualité technique", profiles: ["science", "tech"] },
+                    { text: "L'impact positif sur les autres", profiles: ["social", "sante"] },
+                    { text: "L'originalité du résultat", profiles: ["creative", "culture"] },
+                    { text: "Les résultats visibles et concrets", profiles: ["commerce", "nature"] }
+                ]
+            },
+            {
+                question: "Quelle compétence aimeriez-vous développer en priorité ?",
+                answers: [
+                    { text: "Programmation, data, sciences avancées", profiles: ["tech", "science"] },
+                    { text: "Communication, psychologie, langues", profiles: ["social", "humanites"] },
+                    { text: "Design, vidéo, arts", profiles: ["creative", "culture"] },
+                    { text: "Gestion de projet, entrepreneuriat", profiles: ["commerce", "tech"] }
+                ]
+            },
+            {
+                question: "Qu'est-ce qui vous motive à vous lever le matin ?",
+                answers: [
+                    { text: "Résoudre un problème complexe", profiles: ["science", "tech"] },
+                    { text: "Retrouver mes amis et aider les autres", profiles: ["social", "humanites"] },
+                    { text: "Créer quelque chose de nouveau", profiles: ["creative", "culture"] },
+                    { text: "Atteindre mes objectifs", profiles: ["commerce", "nature"] }
                 ]
             }
         ];
 
         const careers = {
             tech: {
-                title: "Développeur·se / Ingénieur·e Tech",
-                description: "Votre profil révèle une forte affinité pour la technologie et l'innovation. Vous aimez résoudre des problèmes complexes et créer des solutions numériques.",
-                careers: [
-                    "Développeur·se Full-Stack",
-                    "Ingénieur·e en Intelligence Artificielle",
-                    "Data Scientist",
-                    "DevOps Engineer",
-                    "Architecte Cloud"
+                title: "Profil Numérique & Technologies",
+                description: "Vous avez un esprit logique et une passion pour le numérique. Les métiers de la tech et de l'informatique sont faits pour vous !",
+                bac: {
+                    voie: "Bac Général",
+                    specialties: [
+                        "Mathématiques (obligatoire)",
+                        "Numérique et Sciences Informatiques (NSI)",
+                        "Physique-Chimie ou Sciences de l'Ingénieur"
+                    ],
+                    option: "Maths expertes recommandée"
+                },
+                bacTechno: {
+                    voie: "Bac STI2D",
+                    specialite: "Spécialité Systèmes d'Information et Numérique (SIN)"
+                },
+                postbac: [
+                    {
+                        name: "BUT Informatique",
+                        location: "IUT de Reims (50 km)",
+                        info: "3 ans, professionnalisant, parcours cybersécurité ou développement"
+                    },
+                    {
+                        name: "BTS SIO (Services Informatiques aux Organisations)",
+                        location: "Lycée Pierre Bayen, Châlons-en-Champagne",
+                        info: "2 ans, options SLAM (dev) ou SISR (réseaux)"
+                    },
+                    {
+                        name: "Licence Informatique",
+                        location: "Université de Reims Champagne-Ardenne",
+                        info: "Puis Master ou école d'ingénieurs"
+                    },
+                    {
+                        name: "École d'ingénieurs",
+                        location: "ESIREM Reims, UTBM Belfort (prépa intégrée)",
+                        info: "5 ans, formation complète en ingénierie"
+                    }
                 ],
-                skills: ["Programmation", "Logique", "Innovation", "Résolution de problèmes"],
-                outlook: "Le secteur tech continue sa croissance explosive en France avec une forte demande de professionnels qualifiés. Salaires attractifs et télétravail courant."
-            },
-            business: {
-                title: "Manager / Expert·e Business",
-                description: "Vous excellez dans la stratégie, le leadership et la création de valeur. Votre approche pragmatique et votre ambition sont vos atouts majeurs.",
-                careers: [
-                    "Chef·fe de Projet Digital",
-                    "Consultant·e en Stratégie",
-                    "Business Developer",
-                    "Product Manager",
-                    "Entrepreneur·se"
-                ],
-                skills: ["Leadership", "Communication", "Stratégie", "Négociation"],
-                outlook: "Les métiers du business se transforment avec le digital. Forte demande pour les profils capables de combiner vision stratégique et compétences tech."
-            },
-            creative: {
-                title: "Créatif·ve / Designer",
-                description: "Votre créativité et votre sens artistique sont remarquables. Vous aimez concevoir, imaginer et donner vie à des idées originales.",
-                careers: [
-                    "UX/UI Designer",
-                    "Directeur·rice Artistique Digital",
-                    "Motion Designer",
-                    "Content Creator",
-                    "Chef·fe de Projet Créatif"
-                ],
-                skills: ["Créativité", "Design", "Innovation visuelle", "Storytelling"],
-                outlook: "L'économie de la création explose avec les réseaux sociaux et le digital. Les designers UX/UI sont particulièrement recherchés en 2025."
+                careers: ["Développeur web/mobile", "Data analyst", "Ingénieur cybersécurité", "DevOps", "Chef de projet tech"],
+                outlook: "Secteur en forte croissance. Salaires attractifs dès la sortie d'études. Possibilités de télétravail."
             },
             science: {
-                title: "Chercheur·se / Scientifique",
-                description: "Vous êtes animé par la curiosité scientifique et l'analyse. La recherche, l'expérimentation et la découverte sont votre moteur.",
-                careers: [
-                    "Chercheur·se en IA",
-                    "Ingénieur·e R&D",
-                    "Data Analyst",
-                    "Bioinformaticien·ne",
-                    "Ingénieur·e Environnemental"
+                title: "Profil Scientifique & Recherche",
+                description: "Vous êtes curieux, rigoureux et passionné par les sciences. Les métiers de l'ingénierie et de la recherche vous tendent les bras.",
+                bac: {
+                    voie: "Bac Général",
+                    specialties: [
+                        "Mathématiques",
+                        "Physique-Chimie",
+                        "SVT ou Sciences de l'Ingénieur"
+                    ],
+                    option: "Maths expertes conseillée"
+                },
+                bacTechno: {
+                    voie: "Bac STL (Sciences et Technologies de Laboratoire)",
+                    specialite: "Biotechnologies ou Sciences Physiques et Chimiques"
+                },
+                postbac: [
+                    {
+                        name: "CPGE Scientifique (Prépa)",
+                        location: "Lycée Pierre Bayen, Châlons / Lycée Clemenceau, Reims",
+                        info: "MPSI, PCSI pour intégrer une grande école d'ingénieurs"
+                    },
+                    {
+                        name: "BUT Mesures Physiques / Chimie",
+                        location: "IUT Reims-Châlons-Charleville",
+                        info: "3 ans, spécialisation matériaux ou techniques d'instrumentation"
+                    },
+                    {
+                        name: "Licence Sciences (Physique, Chimie, Maths)",
+                        location: "URCA Reims",
+                        info: "Puis Master recherche ou école d'ingénieurs"
+                    },
+                    {
+                        name: "École d'ingénieurs Agro/Environnement",
+                        location: "AgroSup Dijon, UniLaSalle (après prépa ou directement)",
+                        info: "Spécialisation agriculture, environnement"
+                    }
                 ],
-                skills: ["Analyse", "Recherche", "Rigueur scientifique", "Expertise technique"],
-                outlook: "La recherche en IA, biotechnologies et transition écologique connaît un boom. Nombreuses opportunités dans les grandes entreprises et startups."
+                careers: ["Ingénieur R&D", "Chercheur", "Ingénieur qualité", "Technicien de laboratoire", "Ingénieur environnement"],
+                outlook: "Recherche en transition écologique, biotech, énergies renouvelables : secteurs d'avenir avec de nombreux débouchés."
+            },
+            humanites: {
+                title: "Profil Littéraire & Sciences Humaines",
+                description: "Vous aimez réfléchir, débattre, analyser. Les humanités, l'enseignement et la communication sont vos domaines de prédilection.",
+                bac: {
+                    voie: "Bac Général",
+                    specialties: [
+                        "Humanités, Littérature et Philosophie (HLP)",
+                        "Histoire-Géographie, Géopolitique et Sciences Politiques (HGGSP)",
+                        "Langues, Littératures et Cultures Étrangères (LLCE) ou SES"
+                    ],
+                    option: "Latin, grec ou LVC"
+                },
+                postbac: [
+                    {
+                        name: "Licence Lettres / Histoire / Philo",
+                        location: "URCA Reims",
+                        info: "Puis Master enseignement, recherche ou communication"
+                    },
+                    {
+                        name: "CPGE Littéraire (Hypokhâgne/Khâgne)",
+                        location: "Lycée Clemenceau, Reims",
+                        info: "Pour intégrer ENS, IEP ou grandes écoles"
+                    },
+                    {
+                        name: "Licence Sciences de l'Éducation",
+                        location: "URCA Reims",
+                        info: "Métiers de l'enseignement et de la formation"
+                    },
+                    {
+                        name: "BUT Métiers du Multimédia (MMI)",
+                        location: "IUT de Troyes (90 km)",
+                        info: "Communication, création de contenu digital"
+                    }
+                ],
+                careers: ["Professeur", "Journaliste", "Chargé de communication", "Bibliothécaire", "Médiateur culturel"],
+                outlook: "Concours de la fonction publique, médias, édition : secteurs stables avec de belles opportunités."
             },
             social: {
-                title: "Métier du Social et de l'Humain",
-                description: "Votre empathie et votre désir d'aider font de vous un pilier pour les autres. Vous trouvez du sens dans l'accompagnement et le lien social.",
-                careers: [
-                    "Psychologue du Travail",
-                    "Responsable RSE",
-                    "Coach Professionnel",
-                    "Médiateur·rice Numérique",
-                    "Conseiller·ère en Insertion"
+                title: "Profil Social & Accompagnement",
+                description: "Vous êtes empathique et aimez aider les autres. Les métiers du social, de l'éducation et de la santé vous correspondent.",
+                bac: {
+                    voie: "Bac Général",
+                    specialties: [
+                        "Sciences Économiques et Sociales (SES)",
+                        "HLP ou HGGSP",
+                        "SVT (si orientation santé)"
+                    ]
+                },
+                bacTechno: {
+                    voie: "Bac ST2S (Santé et Social)",
+                    specialite: "Idéal pour métiers du soin et du social"
+                },
+                postbac: [
+                    {
+                        name: "BUT Carrières Sociales",
+                        location: "IUT de Troyes",
+                        info: "Animation sociale, éducation spécialisée, assistance sociale"
+                    },
+                    {
+                        name: "Écoles du travail social (ES, EJE, ASS)",
+                        location: "IRTS Champagne-Ardenne, Reims",
+                        info: "3 ans, diplômes d'État (éducateur, assistant social...)"
+                    },
+                    {
+                        name: "Licence Sciences de l'Éducation / Psychologie",
+                        location: "URCA Reims",
+                        info: "Puis Master psychologie ou sciences de l'éducation"
+                    },
+                    {
+                        name: "Écoles d'infirmiers (IFSI)",
+                        location: "IFSI Châlons-en-Champagne / Reims",
+                        info: "3 ans, métiers du soin"
+                    }
                 ],
-                skills: ["Empathie", "Communication", "Accompagnement", "Médiation"],
-                outlook: "La santé mentale et le bien-être au travail deviennent prioritaires. Les métiers de l'accompagnement humain sont en forte croissance."
+                careers: ["Éducateur spécialisé", "Assistant social", "Infirmier", "Conseiller d'insertion", "Psychologue"],
+                outlook: "Métiers en tension avec beaucoup de recrutements. Sens et impact social garantis."
             },
-            health: {
-                title: "Professionnel·le de Santé",
-                description: "Vous avez une vocation pour soigner et prendre soin des autres. La santé et le bien-être sont au cœur de vos préoccupations.",
-                careers: [
-                    "Infirmier·ère en Pratique Avancée",
-                    "Ergothérapeute",
-                    "Diététicien·ne-Nutritionniste",
-                    "Préparateur·rice Physique",
-                    "Technicien·ne en Santé Digitale"
+            creative: {
+                title: "Profil Créatif & Artistique",
+                description: "Vous débordez d'imagination et aimez créer. Les métiers de l'art, du design et de la culture sont faits pour vous.",
+                bac: {
+                    voie: "Bac Général",
+                    specialties: [
+                        "Arts (Arts Plastiques, Cinéma-Audiovisuel, Théâtre...)",
+                        "HLP ou LLCE",
+                        "Une spécialité au choix (Maths pour design graphique)"
+                    ]
+                },
+                bacTechno: {
+                    voie: "Bac STD2A (Design et Arts Appliqués)",
+                    specialite: "Pour écoles d'art et design"
+                },
+                postbac: [
+                    {
+                        name: "DN MADE (Diplôme National des Métiers d'Art et du Design)",
+                        location: "Lycée Libergier, Reims",
+                        info: "3 ans, graphisme, espace, mode"
+                    },
+                    {
+                        name: "BUT Métiers du Multimédia et de l'Internet",
+                        location: "IUT Troyes",
+                        info: "Web design, UX/UI, création de contenu"
+                    },
+                    {
+                        name: "Écoles d'art publiques",
+                        location: "ÉSAD Reims (École Supérieure d'Art et Design)",
+                        info: "5 ans, DNA puis DNSEP"
+                    },
+                    {
+                        name: "BTS Design Graphique / Communication Visuelle",
+                        location: "Lycées à Reims et Troyes",
+                        info: "2 ans, insertion rapide"
+                    }
                 ],
-                skills: ["Soin", "Écoute", "Empathie", "Expertise médicale"],
-                outlook: "Vieillissement de la population et digitalisation de la santé créent de nombreuses opportunités. Métiers en tension avec de belles perspectives."
+                careers: ["Graphiste", "UX/UI Designer", "Illustrateur", "Motion designer", "Directeur artistique"],
+                outlook: "Forte demande en digital et communication visuelle. Nombreux indépendants et freelances."
             },
-            artisan: {
-                title: "Artisan·e / Expert·e Technique",
-                description: "Vous aimez travailler avec vos mains et créer des objets concrets. Le savoir-faire technique et la qualité sont vos priorités.",
-                careers: [
-                    "Artisan·e du Bâtiment Écologique",
-                    "Technicien·ne en Énergies Renouvelables",
-                    "Électricien·ne Domotique",
-                    "Designer d'Objets Connectés",
-                    "Menuisier·ère Créateur·rice",
-                    "Paysagiste"
+            commerce: {
+                title: "Profil Commerce & Gestion",
+                description: "Vous êtes dynamique, ambitieux et aimez le contact. Les métiers du commerce et du management vous attendent.",
+                bac: {
+                    voie: "Bac Général",
+                    specialties: [
+                        "Sciences Économiques et Sociales (SES)",
+                        "Mathématiques",
+                        "HGGSP ou LLCE (langues)"
+                    ]
+                },
+                bacTechno: {
+                    voie: "Bac STMG (Management et Gestion)",
+                    specialite: "Mercatique, Gestion-Finance ou Ressources Humaines"
+                },
+                postbac: [
+                    {
+                        name: "BUT Techniques de Commercialisation (TC)",
+                        location: "IUT Reims-Châlons-Charleville",
+                        info: "3 ans, commerce, marketing, vente"
+                    },
+                    {
+                        name: "BUT Gestion des Entreprises et Administrations (GEA)",
+                        location: "IUT Reims-Châlons-Charleville",
+                        info: "Comptabilité, finance, RH"
+                    },
+                    {
+                        name: "BTS MCO / NDRC",
+                        location: "Lycées Châlons et Reims",
+                        info: "2 ans, Management Commercial ou Négociation Digitale"
+                    },
+                    {
+                        name: "École de Commerce",
+                        location: "NEOMA Reims (post-prépa ou admissions parallèles)",
+                        info: "Grande école de commerce reconnue"
+                    }
                 ],
-                skills: ["Savoir-faire technique", "Précision", "Créativité pratique", "Autonomie"],
-                outlook: "La transition écologique et la rénovation énergétique dynamisent l'artisanat. Les artisans qualifiés sont très recherchés avec d'excellentes rémunérations."
+                careers: ["Chargé de clientèle", "Responsable marketing", "Chef de produit", "Entrepreneur", "Consultant"],
+                outlook: "Excellents débouchés, évolutions rapides. Salaires attractifs dans le commercial et le digital."
+            },
+            sante: {
+                title: "Profil Santé & Paramédical",
+                description: "Vous voulez soigner, aider et prendre soin des autres. Les métiers de la santé sont votre vocation.",
+                bac: {
+                    voie: "Bac Général",
+                    specialties: [
+                        "SVT (obligatoire)",
+                        "Physique-Chimie",
+                        "Mathématiques (pour médecine/kiné)"
+                    ],
+                    option: "Parcours santé dès la Première"
+                },
+                bacTechno: {
+                    voie: "Bac ST2S (Santé et Social)",
+                    specialite: "Accès paramédical facilité"
+                },
+                postbac: [
+                    {
+                        name: "IFSI (Institut de Formation en Soins Infirmiers)",
+                        location: "IFSI Châlons-en-Champagne / Reims / Troyes",
+                        info: "3 ans, diplôme d'État infirmier"
+                    },
+                    {
+                        name: "PASS / L.AS (Accès Santé)",
+                        location: "URCA Reims",
+                        info: "Pour médecine, pharmacie, dentaire, kiné, maïeutique"
+                    },
+                    {
+                        name: "Écoles paramédicales",
+                        location: "Région Grand Est",
+                        info: "Kiné, orthophoniste, ergothérapeute, psychomotricien"
+                    },
+                    {
+                        name: "BUT Génie Biologique",
+                        location: "IUT Reims",
+                        info: "Diététique, analyses biomédicales"
+                    }
+                ],
+                careers: ["Infirmier", "Médecin", "Kinésithérapeute", "Pharmacien", "Orthophoniste"],
+                outlook: "Métiers en très forte demande. Sécurité de l'emploi. Secteur porteur avec de nombreuses spécialisations."
+            },
+            nature: {
+                title: "Profil Environnement & Métiers de Terrain",
+                description: "Vous aimez l'action, la nature et le travail concret. Les métiers de l'environnement et de l'artisanat sont pour vous.",
+                bac: {
+                    voie: "Bac Général",
+                    specialties: [
+                        "SVT",
+                        "Physique-Chimie ou Biologie-Écologie",
+                        "Mathématiques"
+                    ]
+                },
+                bacTechno: {
+                    voie: "Bac STAV (Agronomie et Vivant)",
+                    specialite: "En lycée agricole"
+                },
+                postbac: [
+                    {
+                        name: "BTSA (BTS Agricole)",
+                        location: "LEGTA Avize (51) - Lycée Viticole / CFPPA Châlons",
+                        info: "Viticulture-œnologie, agroéquipement, gestion forestière"
+                    },
+                    {
+                        name: "BUT Génie Biologique - Environnement",
+                        location: "IUT Reims",
+                        info: "Gestion environnementale, écologie"
+                    },
+                    {
+                        name: "Licence Professionnelle Agroalimentaire",
+                        location: "URCA / IUT",
+                        info: "Industries agroalimentaires de la Champagne"
+                    },
+                    {
+                        name: "École d'ingénieurs agronomes",
+                        location: "UniLaSalle Beauvais, AgroSup Dijon",
+                        info: "Agriculture, environnement, agroalimentaire"
+                    }
+                ],
+                careers: ["Technicien environnement", "Viticulteur", "Paysagiste", "Ingénieur agronome", "Garde forestier"],
+                outlook: "Transition écologique : secteur en plein boom. Champagne = région viticole majeure avec de nombreux débouchés."
+            },
+            culture: {
+                title: "Profil Culture & Communication",
+                description: "Vous êtes passionné par la culture, les médias et la communication. Ces secteurs vous offrent de belles perspectives.",
+                bac: {
+                    voie: "Bac Général",
+                    specialties: [
+                        "HLP (Humanités, Littérature, Philosophie)",
+                        "LLCE ou Arts",
+                        "HGGSP ou SES"
+                    ]
+                },
+                postbac: [
+                    {
+                        name: "BUT Information-Communication",
+                        location: "IUT Reims",
+                        info: "Journalisme, communication, publicité"
+                    },
+                    {
+                        name: "Licence Lettres / Arts / Histoire de l'Art",
+                        location: "URCA Reims",
+                        info: "Puis Master médiation culturelle, patrimoine"
+                    },
+                    {
+                        name: "BTS Communication",
+                        location: "Lycées Reims et Châlons",
+                        info: "2 ans, agences de com et entreprises"
+                    },
+                    {
+                        name: "École de journalisme",
+                        location: "IEP Paris (Science Po), écoles spécialisées",
+                        info: "Après prépa ou licence"
+                    }
+                ],
+                careers: ["Journaliste", "Chargé de communication", "Community manager", "Médiateur culturel", "Attaché de presse"],
+                outlook: "Transformation digitale des médias. Forte demande en communication digitale et réseaux sociaux."
             }
         };
 
@@ -553,12 +872,14 @@
         let answers = [];
         let scores = {
             tech: 0,
-            business: 0,
-            creative: 0,
             science: 0,
+            humanites: 0,
             social: 0,
-            health: 0,
-            artisan: 0
+            creative: 0,
+            commerce: 0,
+            sante: 0,
+            nature: 0,
+            culture: 0
         };
 
         function startQuiz() {
@@ -634,12 +955,14 @@
         function calculateResults() {
             scores = {
                 tech: 0,
-                business: 0,
-                creative: 0,
                 science: 0,
+                humanites: 0,
                 social: 0,
-                health: 0,
-                artisan: 0
+                creative: 0,
+                commerce: 0,
+                sante: 0,
+                nature: 0,
+                culture: 0
             };
 
             answers.forEach((answerIndex, questionIndex) => {
@@ -670,18 +993,39 @@
                 <h3>${career.title}</h3>
                 <p><strong>${career.description}</strong></p>
 
-                <h4 style="color: #667eea; margin-top: 25px; margin-bottom: 10px;">Métiers recommandés :</h4>
-                <ul>
-                    ${career.careers.map(c => `<li>${c}</li>`).join('')}
-                </ul>
-
-                <h4 style="color: #667eea; margin-top: 25px; margin-bottom: 10px;">Vos compétences clés :</h4>
-                <div class="skills-tags">
-                    ${career.skills.map(skill => `<span class="tag">${skill}</span>`).join('')}
+                <div class="specialties-box">
+                    <h4>🎓 Spécialités recommandées au Bac</h4>
+                    <p><strong>${career.bac.voie}</strong></p>
+                    <ul>
+                        ${career.bac.specialties.map(s => `<li>${s}</li>`).join('')}
+                    </ul>
+                    ${career.bac.option ? `<p style="margin-top: 10px;"><em>💡 ${career.bac.option}</em></p>` : ''}
+                    ${career.bacTechno ? `
+                        <p style="margin-top: 15px;"><strong>Ou ${career.bacTechno.voie}</strong></p>
+                        <p>${career.bacTechno.specialite}</p>
+                    ` : ''}
                 </div>
 
-                <h4 style="color: #667eea; margin-top: 25px; margin-bottom: 10px;">Perspectives 2025 :</h4>
+                <h4>📚 Formations Post-Bac dans la région</h4>
+                ${career.postbac.map(school => `
+                    <div class="schools-box">
+                        <div class="school-name">${school.name}</div>
+                        <div class="school-info">📍 ${school.location}</div>
+                        <div class="school-info">${school.info}</div>
+                    </div>
+                `).join('')}
+
+                <div class="pathway-box">
+                    <h4>💼 Exemples de métiers</h4>
+                    <p>${career.careers.join(' • ')}</p>
+                </div>
+
+                <h4>🚀 Perspectives 2025</h4>
                 <p>${career.outlook}</p>
+
+                <p style="margin-top: 25px; padding: 15px; background: #e8f5e9; border-radius: 8px; border-left: 4px solid #4caf50;">
+                    <strong>💬 Conseil :</strong> Parlez-en avec votre professeur principal et votre conseiller d'orientation. Participez aux Journées Portes Ouvertes des établissements qui vous intéressent !
+                </p>
             `;
 
             resultContent.innerHTML = html;
@@ -695,12 +1039,14 @@
             answers = [];
             scores = {
                 tech: 0,
-                business: 0,
-                creative: 0,
                 science: 0,
+                humanites: 0,
                 social: 0,
-                health: 0,
-                artisan: 0
+                creative: 0,
+                commerce: 0,
+                sante: 0,
+                nature: 0,
+                culture: 0
             };
 
             document.querySelector('.result-screen').classList.remove('active');
