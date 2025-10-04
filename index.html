@@ -2378,7 +2378,7 @@
                     <h4>💼 Exemples de métiers (cliquez pour détails)</h4>
                     <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px;">
                         ${career.careers.map(job => `
-                            <span onclick="showJobDetails('${job}')" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px 16px; border-radius: 20px; font-size: 0.9em; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">
+                            <span onclick="showJobDetails(\`${job}\`)" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px 16px; border-radius: 20px; font-size: 0.9em; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">
                                 ${job}
                             </span>
                         `).join('')}
@@ -2429,6 +2429,7 @@
         }
 
         function showProfileDetails(profileKey) {
+            navigationHistory.push(document.getElementById('resultContent').innerHTML);
             const career = careers[profileKey];
             const resultContent = document.getElementById('resultContent');
 
@@ -2466,7 +2467,7 @@
                     <h4>💼 Exemples de métiers (cliquez pour détails)</h4>
                     <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px;">
                         ${career.careers.map(job => `
-                            <span onclick="showJobDetails('${job}')" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px 16px; border-radius: 20px; font-size: 0.9em; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">
+                            <span onclick="showJobDetails(\`${job}\`)" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px 16px; border-radius: 20px; font-size: 0.9em; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">
                                 ${job}
                             </span>
                         `).join('')}
@@ -2482,13 +2483,20 @@
             `;
 
             resultContent.innerHTML = html;
+            savedResults = html;
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         let savedResults = null;
+        let navigationHistory = [];
 
         function showPreviousResults() {
-            if (savedResults) {
+            if (navigationHistory.length > 0) {
+                const previousPage = navigationHistory.pop();
+                const resultContent = document.getElementById('resultContent');
+                resultContent.innerHTML = previousPage;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else if (savedResults) {
                 const resultContent = document.getElementById('resultContent');
                 resultContent.innerHTML = savedResults;
                 window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2496,6 +2504,7 @@
         }
 
         function showJobDetails(jobName) {
+            navigationHistory.push(document.getElementById('resultContent').innerHTML);
             const job = jobsDatabase[jobName];
             if (!job) {
                 alert(`Désolé, les détails pour "${jobName}" ne sont pas encore disponibles.`);
@@ -2566,6 +2575,7 @@
             answers = [];
             selectedClass = null;
             savedResults = null;
+            navigationHistory = [];
             scores = {
                 tech: 0,
                 science: 0,
@@ -2586,6 +2596,17 @@
             document.querySelector('.result-screen').classList.remove('active');
             document.querySelector('.welcome-screen').classList.add('active');
         }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                const quizScreen = document.querySelector('.quiz-screen');
+                const nextBtn = document.getElementById('nextBtn');
+                
+                if (quizScreen.classList.contains('active') && nextBtn && !nextBtn.disabled) {
+                    nextQuestion();
+                }
+            }
+        });
     </script>
 </body>
 </html>
