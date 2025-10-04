@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz des Métiers pour Enfants</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #ff6b6b;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.8em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.3em;
+        }
+
+        .welcome-screen, .quiz-screen, .result-screen {
+            display: none;
+        }
+
+        .welcome-screen.active, .quiz-screen.active, .result-screen.active {
+            display: block;
+        }
+
+        .start-btn, .next-btn, .restart-btn {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.3em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: block;
+            margin: 30px auto;
+            font-family: 'Comic Sans MS', sans-serif;
+            font-weight: bold;
+        }
+
+        .start-btn:hover, .next-btn:hover, .restart-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+        }
+
+        .question-container {
+            margin: 30px 0;
+        }
+
+        .question {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .answers {
+            display: grid;
+            gap: 15px;
+        }
+
+        .answer {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 4px solid #e0e0e0;
+            padding: 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.4em;
+            text-align: center;
+        }
+
+        .answer:hover {
+            border-color: #ff6b6b;
+            background: linear-gradient(135deg, #fff5f5 0%, #ffe3e3 100%);
+            transform: translateX(10px);
+        }
+
+        .answer.selected {
+            border-color: #ff6b6b;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .progress {
+            text-align: center;
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 35px;
+            border-radius: 25px;
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        .result-card h2 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .result-card p {
+            font-size: 1.3em;
+            line-height: 1.6;
+        }
+
+        .job-list {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 20px;
+            margin: 20px 0;
+        }
+
+        .job-list h3 {
+            color: #ff6b6b;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+
+        .job-item {
+            display: inline-block;
+            background: white;
+            padding: 12px 20px;
+            margin: 8px;
+            border-radius: 25px;
+            font-size: 1.2em;
+            border: 3px solid #ff6b6b;
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        .emoji {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .back-link a {
+            color: #667eea;
+            font-size: 1.2em;
+            text-decoration: none;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .back-link a:hover {
+            color: #764ba2;
+            border-bottom-color: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="welcome-screen active">
+            <h1>🌟 Découvre ton Métier de Rêve ! 🌟</h1>
+            <p class="subtitle">Réponds à 10 questions simples pour découvrir quel métier est fait pour toi !</p>
+            <button class="start-btn" onclick="startQuiz()">Commencer le Quiz !</button>
+            <div class="back-link">
+                <a href="index.html">← Version pour les plus grands</a>
+            </div>
+        </div>
+
+        <div class="quiz-screen">
+            <div class="progress">Question <span id="current">1</span> sur 10</div>
+            <div class="question-container">
+                <div class="question" id="question"></div>
+                <div class="answers" id="answers"></div>
+            </div>
+            <button class="next-btn" onclick="nextQuestion()">Question Suivante !</button>
+        </div>
+
+        <div class="result-screen">
+            <h1>🎉 Voici tes résultats ! 🎉</h1>
+            <div id="results"></div>
+            <button class="restart-btn" onclick="location.reload()">Refaire le Quiz !</button>
+            <div class="back-link">
+                <a href="index.html">← Version pour les plus grands</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Qu'est-ce que tu aimes faire le plus ?",
+                answers: [
+                    { text: "Jouer dehors et bouger", scores: { nature: 3, sport: 2 } },
+                    { text: "Dessiner et créer des choses", scores: { creative: 3, art: 2 } },
+                    { text: "Lire des livres et raconter des histoires", scores: { education: 3, culture: 2 } },
+                    { text: "Jouer avec les ordinateurs et tablettes", scores: { tech: 3, science: 1 } }
+                ]
+            },
+            {
+                question: "Quel est ton endroit préféré ?",
+                answers: [
+                    { text: "La forêt ou le parc", scores: { nature: 3, sport: 1 } },
+                    { text: "L'école ou la bibliothèque", scores: { education: 3, science: 1 } },
+                    { text: "Un magasin ou un marché", scores: { commerce: 3, social: 1 } },
+                    { text: "Un musée ou un théâtre", scores: { culture: 3, creative: 1 } }
+                ]
+            },
+            {
+                question: "Qu'est-ce que tu veux faire quand tu es grand ?",
+                answers: [
+                    { text: "Aider les gens", scores: { social: 3, sante: 2, education: 1 } },
+                    { text: "Inventer des choses nouvelles", scores: { tech: 3, science: 2 } },
+                    { text: "Faire rire les gens", scores: { creative: 3, culture: 2 } },
+                    { text: "Protéger les animaux ou la nature", scores: { nature: 3, sante: 1 } }
+                ]
+            },
+            {
+                question: "Quel animal tu préfères ?",
+                answers: [
+                    { text: "Un chien ou un chat", scores: { nature: 2, sante: 1 } },
+                    { text: "Un dauphin ou un cheval", scores: { nature: 3, sport: 1 } },
+                    { text: "Un oiseau ou un papillon", scores: { creative: 2, nature: 1 } },
+                    { text: "Je préfère les robots !", scores: { tech: 3, science: 1 } }
+                ]
+            },
+            {
+                question: "Qu'est-ce que tu aimes regarder à la télé ?",
+                answers: [
+                    { text: "Des documentaires sur les animaux", scores: { nature: 3, science: 1 } },
+                    { text: "Des dessins animés rigolos", scores: { creative: 2, culture: 2 } },
+                    { text: "Des émissions de cuisine", scores: { creative: 2, commerce: 1 } },
+                    { text: "Des films sur les pompiers ou docteurs", scores: { sante: 3, social: 2 } }
+                ]
+            },
+            {
+                question: "Si tu pouvais avoir un super-pouvoir, ce serait ?",
+                answers: [
+                    { text: "Parler avec les animaux", scores: { nature: 3, social: 1 } },
+                    { text: "Guérir les gens malades", scores: { sante: 3, social: 2 } },
+                    { text: "Créer des choses avec ma tête", scores: { creative: 3, tech: 1 } },
+                    { text: "Voler dans le ciel", scores: { sport: 2, nature: 1 } }
+                ]
+            },
+            {
+                question: "Dans ta classe, tu es plutôt ?",
+                answers: [
+                    { text: "Celui qui aide les autres", scores: { social: 3, education: 2 } },
+                    { text: "Celui qui pose beaucoup de questions", scores: { science: 3, education: 1 } },
+                    { text: "Celui qui fait des blagues", scores: { creative: 2, culture: 2 } },
+                    { text: "Celui qui est bon en sport", scores: { sport: 3, nature: 1 } }
+                ]
+            },
+            {
+                question: "Qu'est-ce que tu aimes faire avec tes mains ?",
+                answers: [
+                    { text: "Construire des Lego ou des puzzles", scores: { tech: 2, science: 2 } },
+                    { text: "Faire de la peinture ou du bricolage", scores: { creative: 3, art: 2 } },
+                    { text: "Jardiner ou planter des fleurs", scores: { nature: 3 } },
+                    { text: "Faire du sport ou danser", scores: { sport: 3, creative: 1 } }
+                ]
+            },
+            {
+                question: "Quel est ton rêve pour le monde ?",
+                answers: [
+                    { text: "Que tout le monde soit heureux", scores: { social: 3, education: 1 } },
+                    { text: "Que la nature soit protégée", scores: { nature: 3, science: 1 } },
+                    { text: "Que tout le monde puisse apprendre", scores: { education: 3, culture: 1 } },
+                    { text: "Que personne ne soit malade", scores: { sante: 3, science: 1 } }
+                ]
+            },
+            {
+                question: "Qu'est-ce qui te rend le plus fier ?",
+                answers: [
+                    { text: "Réussir quelque chose de difficile", scores: { science: 2, tech: 2 } },
+                    { text: "Faire plaisir à quelqu'un", scores: { social: 3, education: 1 } },
+                    { text: "Créer quelque chose de beau", scores: { creative: 3, art: 2 } },
+                    { text: "Gagner un match ou une course", scores: { sport: 3, commerce: 1 } }
+                ]
+            }
+        ];
+
+        const careers = {
+            tech: {
+                title: "Métiers de l'Informatique",
+                emoji: "💻",
+                description: "Tu aimes les ordinateurs et créer des choses sur les écrans !",
+                jobs: ["Créateur de jeux vidéo", "Développeur de sites internet", "Réparateur d'ordinateurs", "Créateur d'applications pour téléphone"]
+            },
+            science: {
+                title: "Métiers de la Science",
+                emoji: "🔬",
+                description: "Tu es curieux et tu veux découvrir comment les choses fonctionnent !",
+                jobs: ["Scientifique", "Chercheur", "Astronaute", "Inventeur"]
+            },
+            education: {
+                title: "Métiers de l'Enseignement",
+                emoji: "📚",
+                description: "Tu aimes apprendre et expliquer des choses aux autres !",
+                jobs: ["Maîtresse ou Maître d'école", "Professeur", "Bibliothécaire", "Éducateur"]
+            },
+            social: {
+                title: "Métiers pour Aider les Gens",
+                emoji: "🤝",
+                description: "Tu veux aider les autres et les rendre heureux !",
+                jobs: ["Pompier", "Policier", "Animateur pour enfants", "Travailleur social"]
+            },
+            creative: {
+                title: "Métiers Créatifs",
+                emoji: "🎨",
+                description: "Tu aimes créer, dessiner et imaginer de nouvelles choses !",
+                jobs: ["Dessinateur", "Artiste peintre", "Créateur de jouets", "Designer", "Cuisinier"]
+            },
+            commerce: {
+                title: "Métiers du Commerce",
+                emoji: "🏪",
+                description: "Tu aimes échanger avec les gens et vendre des choses !",
+                jobs: ["Vendeur", "Boulanger-Pâtissier", "Fleuriste", "Chef d'entreprise"]
+            },
+            sante: {
+                title: "Métiers de la Santé",
+                emoji: "⚕️",
+                description: "Tu veux soigner les gens et les animaux !",
+                jobs: ["Docteur", "Infirmière", "Vétérinaire", "Pharmacien", "Dentiste"]
+            },
+            nature: {
+                title: "Métiers de la Nature",
+                emoji: "🌳",
+                description: "Tu adores les animaux et être dehors dans la nature !",
+                jobs: ["Vétérinaire", "Jardinier", "Fermier", "Gardien de zoo", "Paysagiste"]
+            },
+            sport: {
+                title: "Métiers du Sport",
+                emoji: "⚽",
+                description: "Tu es sportif et tu aimes bouger !",
+                jobs: ["Professeur de sport", "Sportif professionnel", "Coach sportif", "Danseur"]
+            },
+            culture: {
+                title: "Métiers de la Culture",
+                emoji: "🎭",
+                description: "Tu aimes les spectacles, la musique et les histoires !",
+                jobs: ["Acteur", "Chanteur", "Musicien", "Écrivain", "Journaliste"]
+            },
+            art: {
+                title: "Métiers de l'Art",
+                emoji: "🖌️",
+                description: "Tu veux créer de belles choses et les montrer au monde !",
+                jobs: ["Artiste", "Sculpteur", "Photographe", "Styliste", "Architecte"]
+            }
+        };
+
+        let currentQuestion = 0;
+        let answers = [];
+        let shuffledQuestions = [];
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function startQuiz() {
+            shuffledQuestions = shuffleArray(questions);
+            currentQuestion = 0;
+            answers = [];
+            document.querySelector('.welcome-screen').classList.remove('active');
+            document.querySelector('.quiz-screen').classList.add('active');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const question = shuffledQuestions[currentQuestion];
+            document.getElementById('current').textContent = currentQuestion + 1;
+            document.getElementById('question').textContent = question.question;
+            
+            const answersHtml = question.answers.map((answer, index) => 
+                `<div class="answer" onclick="selectAnswer(${index})">${answer.text}</div>`
+            ).join('');
+            
+            document.getElementById('answers').innerHTML = answersHtml;
+        }
+
+        function selectAnswer(answerIndex) {
+            const answerElements = document.querySelectorAll('.answer');
+            
+            if (!answers[currentQuestion]) {
+                answers[currentQuestion] = [];
+            }
+            
+            const index = answers[currentQuestion].indexOf(answerIndex);
+            if (index > -1) {
+                answers[currentQuestion].splice(index, 1);
+                answerElements[answerIndex].classList.remove('selected');
+            } else {
+                answers[currentQuestion].push(answerIndex);
+                answerElements[answerIndex].classList.add('selected');
+            }
+        }
+
+        function nextQuestion() {
+            if (!answers[currentQuestion] || answers[currentQuestion].length === 0) {
+                alert("Choisis au moins une réponse !");
+                return;
+            }
+
+            currentQuestion++;
+            if (currentQuestion < shuffledQuestions.length) {
+                showQuestion();
+            } else {
+                calculateResults();
+            }
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' && document.querySelector('.quiz-screen').classList.contains('active')) {
+                nextQuestion();
+            }
+        });
+
+        function calculateResults() {
+            const scores = {};
+            
+            for (let i = 0; i < shuffledQuestions.length; i++) {
+                const question = shuffledQuestions[i];
+                const answerIndexes = answers[i];
+                const weight = 1 / answerIndexes.length;
+                
+                answerIndexes.forEach(answerIndex => {
+                    const answer = question.answers[answerIndex];
+                    for (let career in answer.scores) {
+                        scores[career] = (scores[career] || 0) + (answer.scores[career] * weight);
+                    }
+                });
+            }
+
+            const sortedScores = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+            const topProfiles = sortedScores.slice(0, 3);
+            
+            showResults(topProfiles, scores);
+        }
+
+        function showResults(topProfiles, allScores) {
+            document.querySelector('.quiz-screen').classList.remove('active');
+            document.querySelector('.result-screen').classList.add('active');
+
+            const total = topProfiles.reduce((sum, [_, score]) => sum + score, 0);
+            
+            let resultsHtml = '';
+            
+            topProfiles.forEach(([profileKey, score], index) => {
+                const career = careers[profileKey];
+                const percentage = Math.round((score / total) * 100);
+                
+                resultsHtml += `
+                    <div class="result-card">
+                        <span class="emoji">${career.emoji}</span>
+                        <h2>${index === 0 ? '🏆 ' : ''}${career.title}</h2>
+                        <p>${career.description}</p>
+                        <p style="font-size: 1.5em; margin-top: 15px; font-weight: bold;">${percentage}% compatible !</p>
+                    </div>
+                    <div class="job-list">
+                        <h3>Métiers qui pourraient te plaire :</h3>
+                        ${career.jobs.map(job => `<span class="job-item">${job}</span>`).join('')}
+                    </div>
+                `;
+            });
+            
+            document.getElementById('results').innerHTML = resultsHtml;
+        }
+    </script>
+</body>
+</html>
